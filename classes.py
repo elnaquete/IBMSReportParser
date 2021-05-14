@@ -3,7 +3,13 @@ class Pieza(object):
     pass
 
 class Pieza_on_air(Pieza):
-    pass
+    def __init__(self, programme, duration, media_MI):
+        self.programme = programme
+        self.duration = duration
+        self.media_MI = media_MI
+    
+    def __str__(self):
+        return f"Nombre de promo: {self.programme}\nDuración: {self.duration}\nMedia MI: {self.media_MI}"
 
 class Pasada(object):
     def __init__(self, number, feed, tx_date, tx_time, programme, duration, media_MI, description, event_sub_type):
