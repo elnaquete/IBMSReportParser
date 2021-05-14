@@ -1,0 +1,1 @@
+FEEDS = ('AMCS', 'AMCB', 'AMCL', 'AMCN', 'AMCO', 'AMCS', 'EURL', 'FYAB', 'FYAL', 'GOUN', 'GOUS', 'GOUU', 'MASL', 'MASU')
