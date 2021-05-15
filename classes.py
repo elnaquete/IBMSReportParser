@@ -3,6 +3,9 @@ class Pieza(object):
     pass
 
 class Pieza_on_air(Pieza):
+    """
+    Por ahora no la usamos, usamos una tupla con programme y duration en su lugar
+    """
     def __init__(self, programme, duration, media_MI):
         self.programme = programme
         self.duration = duration

@@ -1,7 +1,7 @@
 encoding = 'utf-8'
 
 import csv
-from classes import Pasada, Pieza_on_air
+from classes import Pasada
 from counter import promo_counter
 from constants import FEEDS
 import pprint
@@ -13,6 +13,7 @@ with open("Test_full.csv", "r") as f:
     lista_pasadas = []
     db_promos = {}
     
+    #este loop tiene que ir a una funcion separada:
     for number, line in enumerate(reader):
         media_MI = line[5]
         #conformo la lista de pasadas (lista)
@@ -20,7 +21,7 @@ with open("Test_full.csv", "r") as f:
         #conformo el inventario de promos (diccionario)
         #tengo forma de chequear que no haya valores repetidos?
         if media_MI not in db_promos.keys():
-            db_promos[media_MI] = Pieza_on_air(line[3], line[4], media_MI)
+            db_promos[media_MI] = (line[3], line[4])
 
 
 
@@ -28,11 +29,11 @@ with open("Test_full.csv", "r") as f:
 pp = pprint.PrettyPrinter(indent=4, sort_dicts=False)
 
 
-#print (f"\n Lista de feeds disponibles: \n {FEEDS}")
-#chosen_feed = input("De qué feed necesita el reporte? O Escriba ALL para todos\n")
+print (f"\n Lista de feeds disponibles: \n {FEEDS}")
+chosen_feed = input("De qué feed necesita el reporte? O Escriba ALL para todos\n")
 
 
-#result = promo_counter(lista_pasadas[1:],chosen_feed)
-#pp.pprint (result)
+result = promo_counter(lista_pasadas[1:],chosen_feed)
+pp.pprint (result)
 
 # para indexar dentro de una lista, usar list [2][3], x ej.
