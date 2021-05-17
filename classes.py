@@ -15,10 +15,11 @@ class Pieza_on_air(Pieza):
         return f"Nombre de promo: {self.programme}\nDuración: {self.duration}\nMedia MI: {self.media_MI}"
 
 class Pasada(object):
-    def __init__(self, number, feed, tx_date_time, programme, duration, media_MI, description, event_sub_type):
+    def __init__(self, number, feed, tx_date, tx_time, programme, duration, media_MI, description, event_sub_type):
         self.number = number
         self.feed = feed
-        self.tx_date_time = tx_date_time
+        self.tx_date = tx_date
+        self.tx_time = tx_time
         self.programme = programme
         self.duration = duration
         self.media_MI = media_MI
@@ -26,7 +27,7 @@ class Pasada(object):
         self.event_sub_type = event_sub_type
 
     def __str__(self):
-        return f""" number: {self.number} \n feed: {self.feed} \n tx_date_time: {self.tx_date_time} \n programme: {self.programme} \n duration: {self.duration} \n media_MI: {self.media_MI} \n description: {self.description} \n event_sub_type: {self.event_sub_type}
+        return f""" number: {self.number} \n feed: {self.feed} \n tx_date and time: {self.tx_date} {self.tx_time} \n programme: {self.programme} \n duration: {self.duration} \n media_MI: {self.media_MI} \n description: {self.description} \n event_sub_type: {self.event_sub_type}
             """
 
 
