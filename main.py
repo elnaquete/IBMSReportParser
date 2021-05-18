@@ -2,33 +2,18 @@ encoding = 'utf-8'
 
 from report_parser import report_parser
 from counter import promo_counter
-from constants import BLOQUES_HORARIOS
+from write2excel import write2excel
+
+destination_filename = "final.xlsx"
 
 #Acá estaría bueno que el programa te tire una lista de archivos .csv y te deje elegir de qué
 # reporte querés hacer el excel.
 
 # llamo a la funcion que procesa el reporte. report_parser devuelve una tupla.
-lista_pasadas, promos_database = report_parser("Test_full.csv")
+lista_Pasadas, promos_database = report_parser("Test.csv")
 
+#promo_counter genera las 2 cuentas: totales por pieza y por horarios por pieza por feed.
+pasadas_totales, pasadas_por_horarios = promo_counter(lista_Pasadas)
 
-
-# pregunto al usuario qué reporte quiere? O mando un Excel con una solapa por cada feed?
-chosen_feed = 'ALL'
-
-result, por_horarios = promo_counter(lista_pasadas,chosen_feed)
-
-
-
-
-
-print (f"\nMedia MI\tDescripción\t\t\t\t\t\t\tDuración\tCan\t{BLOQUES_HORARIOS[0]}\t{BLOQUES_HORARIOS[1]}\t{BLOQUES_HORARIOS[2]}\t{BLOQUES_HORARIOS[3]}")
-for key,value in result.items():
-    descripcion = promos_database[key][0]
-    duracion = promos_database[key][1]
-    pasaduli0 = por_horarios.get((key, BLOQUES_HORARIOS[0]), 0)
-    pasaduli1 = por_horarios.get((key, BLOQUES_HORARIOS[1]), 0)
-    pasaduli2 = por_horarios.get((key, BLOQUES_HORARIOS[2]), 0)
-    pasaduli3 = por_horarios.get((key, BLOQUES_HORARIOS[3]), 0)
-    print (f"{key}\t{descripcion}\t{duracion}\t\t\t{value}\t\t{pasaduli0}\t\t{pasaduli1}\t\t{pasaduli2}\t\t{pasaduli3}")
-
-# para indexar dentro de una lista, usar list [2][3], x ej.
+#ahora escribir al excel. Le mando ambos resultados más la base de datos de promos.
+write2excel (promos_database, pasadas_totales, pasadas_por_horarios, destination_filename)

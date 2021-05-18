@@ -13,71 +13,51 @@ def columnTidier (workbook):  #Puesto a mano, luego vemos de automatizarlo.
         sheet.column_dimensions['L'].width = 15
 
 
-def write2excel (lista_pasadas, promos_database, destination_filename):
+def write2excel (promos_database, pasadas_totales, pasadas_por_horarios, destination_filename):
     '''
     IN: 
     lista_pasadas = list of Pasadas objects
+    promos_database = dict
     
     filename = (str) excel filename (include .xlsx extension)
     OUT: Writes Excel file, with separate sheet for each feed
     '''
     encabezadoIBMS = [
-    'Promo Name', 'Time Code In', 'Time Code Out', 'Length', 'Detail',
-    'Feed', 'MainMI', 'AFP', 'START', 'END', 'DUE DATE', 'Allowed Days'
+    'MediaMI', 'Descripcion', 'Duracion', 'Pasadas totales', '00:00-06:00',
+    '06:00-12:00', '12:00-18:00', '18:00-24', 'Descripcion larga', 'Comentarios'
     ]
-    from openpyxl import Workbook
 
-    
+    from openpyxl import Workbook
+    from constants import BLOQUES_HORARIOS
 
     wb = Workbook() #creo libro nuevo . 
     #la plani por default se llama 'Sheet'. Al final de todo, hay que borrarla, porque esta vacía
 
-    for promo in listaPromos:
-        showFeed = promo['showFeed']
-        if promo['promoPckg'] == 'BUMP':
-            promoPack = IBMSlistMaker(promo)
-            showFeed = 'BUMPS ' + showFeed
-            for promoRow in promoPack:
-                if "Disculpe" in promoRow[0]: #Esto no anda, arreglarlo
-                    print (promoRow[0])
-                    if 'ALERTAS' not in wb.sheetnames:
-                        wb.create_sheet(title = 'ALERTAS')  #creo hoja nueva de alertas
-                        ws1 = wb['ALERTAS']
-                        ws1.append(promoRow)  #la agrego como fila a la hoja de alertas
-                    else:
-                        ws1 = wb['ALERTAS']
-                        ws1.append(promoRow)  #la agrego como fila a la hoja de alertas
-                else:
-                    if showFeed not in wb.sheetnames: #si no hay una hoja con el nombre de esa señal
-                        wb.create_sheet(title = showFeed)  #creo hoja nueva con el nombre de esa señal
-                        ws1 = wb[showFeed] #asigno a la variable ws1 el nombre de esa plani
-                        ws1.append(encabezadoIBMS) #agrego el encabezado al comienzo de la lista
-                        ws1.append(promoRow)  #la agrego como fila a la planilla ws1
-                    else:
-                        ws1 = wb[showFeed] #asigno a la variable ws1 el nombre de esa plani
-                        ws1.append(promoRow)  #la agrego como fila a la planilla ws1
-        #aca podemos detectar el flag Crosschannel y armar la plani de Cross ;)
+    for pasadas_keys, pasadas_values in pasadas_totales.items():
+        feed = pasadas_keys[0]
+        media_MI = pasadas_keys[1]
+        descripcion = list(promos_database.get(media_MI))[0]
+        duracion = list(promos_database.get(media_MI))[1]
+        pasadas_totales = pasadas_values
+        pasadas00_06 = pasadas_por_horarios.get((feed, media_MI, BLOQUES_HORARIOS[0]), 0)
+        pasadas06_12 = pasadas_por_horarios.get((feed, media_MI, BLOQUES_HORARIOS[1]), 0)
+        pasadas12_18 = pasadas_por_horarios.get((feed, media_MI, BLOQUES_HORARIOS[2]), 0)
+        pasadas18_24 = pasadas_por_horarios.get((feed, media_MI, BLOQUES_HORARIOS[3]), 0)
+        descripcion_larga = list(promos_database.get(media_MI))[2]
+
+        promoRow = [media_MI, descripcion, duracion, pasadas_totales, pasadas00_06, pasadas06_12, pasadas12_18, pasadas18_24, descripcion_larga]
+
+        print (encabezadoIBMS)
+        print (promoRow)
+
+        if feed not in wb.sheetnames: #si no hay una hoja con el nombre de esa señal
+            wb.create_sheet(title = feed)  #creo hoja nueva con el nombre de esa señal
+            ws1 = wb[feed] #asigno a la variable ws1 el nombre de esa plani
+            ws1.append(encabezadoIBMS) #agrego el encabezado al comienzo de la lista
+            ws1.append(promoRow)  #la agrego como fila a la planilla ws1
         else:
-            promoPack = IBMSlistMaker(promo)
-            for promoRow in promoPack:
-                if "Disculpe" in promoRow[0]: #Esto no anda, arreglarlo
-                    print (promoRow[0])
-                    if 'ALERTAS' not in wb.sheetnames:
-                        wb.create_sheet(title = 'ALERTAS')  #creo hoja nueva de alertas
-                        ws1 = wb['ALERTAS']
-                        ws1.append(promoRow)  #la agrego como fila a la hoja de alertas
-                    else:
-                        ws1 = wb['ALERTAS']
-                        ws1.append(promoRow)  #la agrego como fila a la hoja de alertas
-                else:
-                    if showFeed not in wb.sheetnames: #si no hay una hoja con el nombre de esa señal
-                        wb.create_sheet(title = showFeed)  #creo hoja nueva con el nombre de esa señal
-                        ws1 = wb[showFeed] #asigno a la variable ws1 el nombre de esa plani
-                        ws1.append(encabezadoIBMS) #agrego el encabezado al comienzo de la lista
-                        ws1.append(promoRow)  #la agrego como fila a la planilla ws1
-                    else:
-                        ws1 = wb[showFeed] #asigno a la variable ws1 el nombre de esa plani
-                        ws1.append(promoRow)  #la agrego como fila a la planilla ws1
+            ws1 = wb[feed] #asigno a la variable ws1 el nombre de esa plani
+            ws1.append(promoRow)  #la agrego como fila a la planilla ws1
 
     # Al final de todo, borrar la Hoja 'Sheet' que esta vacía
     wb.remove(wb['Sheet'])

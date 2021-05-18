@@ -12,6 +12,6 @@ def time_handler (time_string):
     if promo_hour in troubling_hours:
         time_string = '0' + str(promo_hour - 24) + time_string[2:]
     
-    return datetime.strptime(time_string, "%I:%M:%S")
+    return datetime.strptime(time_string, "%I:%M:%S").time()
     
 
