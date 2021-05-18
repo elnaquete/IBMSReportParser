@@ -1,16 +1,16 @@
 def columnTidier (workbook):  #Puesto a mano, luego vemos de automatizarlo.
     for sheet in workbook:
-        sheet.column_dimensions['A'].width = 50
-        sheet.column_dimensions['B'].width = 10
+        sheet.column_dimensions['A'].width = 11
+        sheet.column_dimensions['B'].width = 30
         sheet.column_dimensions['C'].width = 10
         sheet.column_dimensions['D'].width = 10
-        sheet.column_dimensions['E'].width = 50
-        sheet.column_dimensions['F'].width = 17
-        sheet.column_dimensions['H'].width = 3
-        sheet.column_dimensions['I'].width = 10
+        sheet.column_dimensions['E'].width = 10
+        sheet.column_dimensions['F'].width = 10
+        sheet.column_dimensions['H'].width = 10
+        sheet.column_dimensions['I'].width = 50
         sheet.column_dimensions['J'].width = 10
         sheet.column_dimensions['K'].width = 10
-        sheet.column_dimensions['L'].width = 15
+        sheet.column_dimensions['L'].width = 10
 
 
 def write2excel (promos_database, pasadas_totales, pasadas_por_horarios, destination_filename):
@@ -22,13 +22,14 @@ def write2excel (promos_database, pasadas_totales, pasadas_por_horarios, destina
     filename = (str) excel filename (include .xlsx extension)
     OUT: Writes Excel file, with separate sheet for each feed
     '''
-    encabezadoIBMS = [
-    'MediaMI', 'Descripcion', 'Duracion', 'Pasadas totales', '00:00-06:00',
-    '06:00-12:00', '12:00-18:00', '18:00-24', 'Descripcion larga', 'Comentarios'
-    ]
-
     from openpyxl import Workbook
     from constants import BLOQUES_HORARIOS
+
+    encabezadoIBMS = [
+    'MediaMI', 'Descripcion', 'Duracion', 'Pasadas totales', '00:00-06:00',
+    '06:00-12:00', '12:00-18:00', '18:00-24:00', 'Descripcion larga', 'Comentarios'
+    ]
+
 
     wb = Workbook() #creo libro nuevo . 
     #la plani por default se llama 'Sheet'. Al final de todo, hay que borrarla, porque esta vacía
@@ -46,9 +47,6 @@ def write2excel (promos_database, pasadas_totales, pasadas_por_horarios, destina
         descripcion_larga = list(promos_database.get(media_MI))[2]
 
         promoRow = [media_MI, descripcion, duracion, pasadas_totales, pasadas00_06, pasadas06_12, pasadas12_18, pasadas18_24, descripcion_larga]
-
-        print (encabezadoIBMS)
-        print (promoRow)
 
         if feed not in wb.sheetnames: #si no hay una hoja con el nombre de esa señal
             wb.create_sheet(title = feed)  #creo hoja nueva con el nombre de esa señal
