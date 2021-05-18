@@ -10,7 +10,7 @@ destination_filename = "final.xlsx"
 # reporte querés hacer el excel.
 
 # llamo a la funcion que procesa el reporte. report_parser devuelve una tupla.
-lista_Pasadas, promos_database = report_parser("Test.csv")
+lista_Pasadas, promos_database = report_parser("Test_full.csv")
 
 #promo_counter genera las 2 cuentas: totales por pieza y por horarios por pieza por feed.
 pasadas_totales, pasadas_por_horarios = promo_counter(lista_Pasadas)
