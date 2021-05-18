@@ -1,5 +1,7 @@
 import datetime as dt
 
+HEADERS = ('CHANNEL_CODE', 'TX_DATE', 'TX_TIME', 'PROGRAMME', 'DURATION', 'HOUSE_MEDIA', 'DESCRIPTION', 'EVENT_SUB_TYPE')
+
 FEEDS = ('AMCS', 'AMCB', 'AMCL', 'AMCN', 'AMCO', 'AMCS', 'EURL', 'FYAB', 'FYAL', 'GOUN', 'GOUS', 'GOUU', 'MASL', 'MASU')
 
 h00 = dt.datetime(1970, 1, 1, 0, 0).time()

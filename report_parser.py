@@ -11,7 +11,9 @@ def report_parser(filename):
         lista_pasadas = []
         promos_database = {}
         for number, line in enumerate(archivo_original):
-            try:   
+            if number == 0: 
+                pass
+            else:
                 feed = line[0] 
                 tx_date = line [1]
                 tx_time = time_handler(line[2])
@@ -27,8 +29,7 @@ def report_parser(filename):
                 #conformo el inventario de promos (diccionario)
                 if media_MI not in promos_database.keys():
                     promos_database[media_MI] = (programme, duration, description)
-            except ValueError: #Para que no cuente al encabezado como una pasada.
-                pass
+
     return lista_pasadas, promos_database
 
 
@@ -46,7 +47,7 @@ def hour_flags_maker (tx_time):
         hour_flag = BLOQUES_HORARIOS[1]
     elif h12 <= tx_time < h18:
         hour_flag = BLOQUES_HORARIOS[2] 
-    elif h18 <= tx_time < h24:
+    elif h18 <= tx_time <= h24:
         hour_flag = BLOQUES_HORARIOS[3]
     
     return hour_flag
