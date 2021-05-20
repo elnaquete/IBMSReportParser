@@ -6,10 +6,9 @@ def time_handler (time_string):
     from datetime import datetime
     
 
-    troubling_hours = (24, 25, 26, 27, 28, 29, 30, 31)
     promo_hour = int (time_string[:2])
     
-    if promo_hour in troubling_hours:
+    if promo_hour >= 24:
         time_string = '0' + str(promo_hour - 24) + time_string[2:]
     
     return datetime.strptime(time_string, "%H:%M:%S").time()
